@@ -1,14 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { Button } from "@/components/ui/button"
+import Layout from '@/layouts/Layout.astro';
+import ChallengesTable from "@/components/pages/home-page/ChalengeTable"
 ---
 
 <Layout title="Welcome to Astro.">
-	<main class="h-screen">
-		<h1>Frontend Challanges</h1>
-		<Button>Button</Button>
-		<ul>
-			<li>Soma Bugada: <a href="/desafios/soma-bugada/vanila-js">JavaScript puro</a></li>
-		</ul>
+	<main>
+		<h1>Frontend Challenges</h1>
+		<ChallengesTable />
 	</main>
 </Layout>
