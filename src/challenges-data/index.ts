@@ -10,7 +10,23 @@ export const completeChallengeData: IChallengesData[] = [
     writtenIn: [
       {
         stack: "JavaScript",
-        path: "challanges/PedroMarianoAlmeida/bugged-sum/vanila-js",
+        paths: [
+          {
+            path: "challenges/PedroMarianoAlmeida/bugged-sum/vanila-js/1",
+            description:
+              "Very similar with HTML, CSS, JS... with only some Astro caveats",
+          },
+        ],
+      },
+    ],
+    solutions: [
+      {
+        stack: "JavaScript",
+        paths: [
+          {
+            path: "challanges/PedroMarianoAlmeida/bugged-sum/vanila-js/solutions/1",
+          },
+        ],
       },
     ],
   },

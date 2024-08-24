@@ -1,9 +1,19 @@
 import { type ColumnDef } from "@tanstack/react-table";
-import { type IChallengesData, type Stacks } from "@/challenges-data/types";
+import { type IChallengesData, type StackPaths } from "@/challenges-data/types";
 
-// TODO: Extract in a component with Stack logo image (react or astro component?)
-const StackLinks = ({ stack, path }: { stack: Stacks; path: string }) => {
-  return <a href={path}>{stack}</a>;
+// TODO: Extract in a component with Stack logo image and Tooltip with explanation
+const StackLinks = ({
+  stackPaths: { stack, paths },
+}: {
+  stackPaths: StackPaths;
+}) => {
+  return (
+    <span>
+      {paths.map(({ path, description }) => (
+        <a href={path}>{stack}</a>
+      ))}
+    </span>
+  );
 };
 
 export const columns: ColumnDef<
@@ -19,11 +29,14 @@ export const columns: ColumnDef<
     accessorKey: "writtenIn",
     header: "Problem written in",
     cell: (info) => {
-      const value = info.getValue() as IChallengesData["writtenIn"];
+      const value = info.getValue() as StackPaths[];
       return (
         <div>
-          {value.map(({ stack, path }) => (
-            <StackLinks key={path} stack={stack} path={path} />
+          {value.map((stackPaths) => (
+            <StackLinks
+              key={JSON.stringify(stackPaths)}
+              stackPaths={stackPaths}
+            />
           ))}
         </div>
       );
