@@ -3,25 +3,69 @@ import {completeChallengeData} from '@/challenges-data'
 import Layout from './Layout.astro'
 import StakLinks from "@/components/project-use/StackLinks.tsx"
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
 const path = Astro.url.href
 
 const [,,,, urlGithubUser, urlExerciseSlug, urlStack] = path.split("/")
+
 const exercice = completeChallengeData.find(({githubUser, exerciseSlug}) => githubUser === urlGithubUser && exerciseSlug === urlExerciseSlug)
-const solutionsSameStack = exercice?.solutions?.find(({stack}) => stack === urlStack)
-const solutionsDiferentStack = exercice?.solutions?.find(({stack}) => stack !== urlStack)
-// TODO: Extract solutions to a separate component, add logic to show only there is existent individually
+
+const solutionsSameStack = exercice?.solutions?.filter(({stack}) => stack === urlStack)
+const solutionsDiferentStack = exercice?.solutions?.filter(({stack}) => stack !== urlStack)
+
+const hasSameStackSolution = solutionsSameStack !== undefined && solutionsSameStack.length > 0 
+const hasDiferentStackSolution = solutionsDiferentStack !== undefined && solutionsDiferentStack.length > 0
+const hasSomeSolution = hasSameStackSolution && hasDiferentStackSolution
+
+// TODO: Extract solutions to a separate component, add logic to show only there is existent individually (maybe) - Missing the Other solutions
+// TODO: extract the hr in a Divider component (maybe)
+// TODO: Check how to format with prettier astro components
 ---
 <Layout title={`${exercice?.exerciseName ?? ""} - ${urlStack}`}>
-    <h1>{exercice?.exerciseName ?? ""}</h1>
-    <p>by {urlGithubUser}</p>
+    <Card>
+        <CardHeader>
+            <div>
+                <CardTitle className="inline-flex">{exercice?.exerciseName ?? ""}</CardTitle>
+                <small class="text-muted-foreground"> - by {urlGithubUser}</small>
+            </div>
+            <CardDescription>Problem coded in {urlStack}</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <hr class="w-100 h-1 mx-auto my-3 bg-gray-100 border-0 rounded dark:bg-gray-700">
+            <slot />
+            <hr class="w-100 h-1 mx-auto my-3 bg-gray-100 border-0 rounded dark:bg-gray-700">
+        </CardContent>
+        <CardFooter className='flex-col items-start'>
+            {hasSomeSolution ? (
+                <>
+                    <CardTitle className='block'>Solutions</CardTitle> 
+                    {hasSameStackSolution && 
+                        <div class="flex gap-1">
+                            <p>Same stack:</p> 
+                            {solutionsSameStack.map(solution=> <StakLinks stackPaths={solution}/>)}
+                        </div>
+                    }
+                </>
+            ) : (
+                <CardDescription>No solutions yet - be the first!</CardDescription>
+            )}
+        </CardFooter>
+    </Card>
 
-    <h2>Problem (code in {urlStack})</h2>
-    <slot />
-    <h2>Solutions</h2>
 
+
+    <!-- <h2>Solutions</h2>
     {solutionsSameStack !== undefined ? 
     <h3>Same Stack</h3>
-    <StakLinks stackPaths={solutionsSameStack}/> : null}
+    <StakLinks stackPaths={solutionsSameStack}/> : null} -->
 </Layout>
 
 
