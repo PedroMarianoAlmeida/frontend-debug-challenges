@@ -1,0 +1,27 @@
+---
+import {completeChallengeData} from '@/challenges-data'
+import Layout from './Layout.astro'
+import StakLinks from "@/components/project-use/StackLinks.tsx"
+
+const path = Astro.url.href
+
+const [,,,, urlGithubUser, urlExerciseSlug, urlStack] = path.split("/")
+const exercice = completeChallengeData.find(({githubUser, exerciseSlug}) => githubUser === urlGithubUser && exerciseSlug === urlExerciseSlug)
+const solutionsSameStack = exercice?.solutions?.find(({stack}) => stack === urlStack)
+const solutionsDiferentStack = exercice?.solutions?.find(({stack}) => stack !== urlStack)
+// TODO: Extract solutions to a separate component, add logic to show only there is existent individually
+---
+<Layout title={`${exercice?.exerciseName ?? ""} - ${urlStack}`}>
+    <h1>{exercice?.exerciseName ?? ""}</h1>
+    <p>by {urlGithubUser}</p>
+
+    <h2>Problem (code in {urlStack})</h2>
+    <slot />
+    <h2>Solutions</h2>
+
+    {solutionsSameStack !== undefined ? 
+    <h3>Same Stack</h3>
+    <StakLinks stackPaths={solutionsSameStack}/> : null}
+</Layout>
+
+

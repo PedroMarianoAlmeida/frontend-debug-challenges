@@ -12,7 +12,7 @@ export const completeChallengeData: IChallengesData[] = [
         stack: "JavaScript",
         paths: [
           {
-            path: "challenges/PedroMarianoAlmeida/bugged-sum/vanila-js/1",
+            path: "/challenges/PedroMarianoAlmeida/bugged-sum/JavaScript/1",
             description:
               "Very similar with HTML, CSS, JS... with only some Astro caveats",
           },
@@ -24,7 +24,15 @@ export const completeChallengeData: IChallengesData[] = [
         stack: "JavaScript",
         paths: [
           {
-            path: "challanges/PedroMarianoAlmeida/bugged-sum/vanila-js/solutions/1",
+            path: "/challenges/PedroMarianoAlmeida/bugged-sum/JavaScript/solutions/1",
+          },
+        ],
+      },
+      {
+        stack: "React",
+        paths: [
+          {
+            path: "/challanges/PedroMarianoAlmeida/bugged-sum/React/solutions/1",
           },
         ],
       },
