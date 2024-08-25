@@ -1,18 +1,23 @@
 ---
-import Layout from '../../../../../layouts/Layout.astro';
+import ChallengeLayout from '../../../../../layouts/ChallengeLayout.astro';
 ---
 
-<Layout title="Soma bugada - JS Puro">
-    <input type="number" placeholder="Número 1" id="num1" onchange="verificarSoma()"/>
-    <input type="number" placeholder="Número 2" id="num2" onchange="verificarSoma()"/>
-    <div>Resultado da Soma é: <span id="resultado"></span></div>
-</Layout>
+<ChallengeLayout>
+    <div class="flex flex-col gap-3">
+        <input class="border-2 max-w-52" type="number" placeholder="Número 1" id="num1" onchange="verificarSomaResJs1()"/>
+        <input class="border-2 max-w-52" type="number" placeholder="Número 2" id="num2" onchange="verificarSomaResJs1()"/>
+        <div>Resultado da Soma é: <span id="resultado"></span></div>
+    </div>
+</ChallengeLayout> 
+
 
 <script>
-    window.verificarSoma = function() {
+    // This window thing is the only difference betwen a regular HTML, CSS and JavaScript project
+    // But the funcion name should be an Unique one - So I change the funcion name to the problem
+    window.verificarSomaResJs1 = function() {
         const num1 = document.querySelector("#num1").value;
         const num2 = document.querySelector("#num2").value;
-        const soma = Number(num1) + Number(num2);
+        const soma = Number(num1) + Number(num2); //We need to convert the string to number - The type number on input is just related to how the fild is presented
         
         const resultado = document.querySelector("#resultado");
         resultado.innerText = soma;
