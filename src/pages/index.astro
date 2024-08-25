@@ -10,6 +10,8 @@ const chalangesData: Challenge[] = chalanges.map(({url}) => {
 	const  [,,challengeName, type, stack] = urlTyped.split("/")
 	return {challengeName, type, stack, url: urlTyped}
 })
+
+// How should I handle with problems that uses more than one page? 🤔
 ---
 
 <Layout title="Challenges - Frontend">

@@ -1,20 +1,8 @@
 ---
-import Layout from '../../../../../layouts/Layout.astro';
+import ChallengeLayout from '../../../../../layouts/ChallengeLayout.astro';
+import BuggedSumReactSolution from '@/components/challenges/bugged-sum/BuggedSumReactSolution'
 ---
 
-<Layout title="Soma bugada - JS Puro">
-    <input type="number" placeholder="Número 1" id="num1" onchange="verificarSoma()"/>
-    <input type="number" placeholder="Número 2" id="num2" onchange="verificarSoma()"/>
-    <div>Resultado da Soma é: <span id="resultado"></span></div>
-</Layout>
-
-<script>
-    window.verificarSoma = function() {
-        const num1 = document.querySelector("#num1").value;
-        const num2 = document.querySelector("#num2").value;
-        const soma = Number(num1) + Number(num2);
-        
-        const resultado = document.querySelector("#resultado");
-        resultado.innerText = soma;
-    }
-</script>
+<ChallengeLayout>
+    <BuggedSumReactSolution client:load/>
+</ChallengeLayout> 
