@@ -1,71 +1,57 @@
 ---
-import {completeChallengeData} from '@/challenges-data'
 import Layout from './Layout.astro'
-import StakLinks from "@/components/project-use/StackLinks.tsx"
+import ChallengesTable from "@/components/project-use/ChallengeTable"
+import {type Challenge} from '@/components/project-use/ChallengeTable/columns'
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 
 const path = Astro.url.href
 
-const [,,,, urlGithubUser, urlExerciseSlug, urlStack] = path.split("/")
 
-const exercice = completeChallengeData.find(({githubUser, exerciseSlug}) => githubUser === urlGithubUser && exerciseSlug === urlExerciseSlug)
+const chalanges: { url: string }[] = await Astro.glob('/src/pages/challenges/**');
+const challengeNameFromPath = path.split("/")[4]
 
-const solutionsSameStack = exercice?.solutions?.filter(({stack}) => stack === urlStack)
-const solutionsDiferentStack = exercice?.solutions?.filter(({stack}) => stack !== urlStack)
+const chalangesData: Challenge[] = chalanges.reduce((acc, {url}) => {
+    const urlTyped = typeof url === 'string' ? url : "";
+    const [,,challengeName, type, stack] = urlTyped.split("/");
 
-const hasSameStackSolution = solutionsSameStack !== undefined && solutionsSameStack.length > 0 
-const hasDiferentStackSolution = solutionsDiferentStack !== undefined && solutionsDiferentStack.length > 0
-const hasSomeSolution = hasSameStackSolution && hasDiferentStackSolution
+    if (challengeName === challengeNameFromPath) {
+        acc.push({ challengeName, type, stack, url: urlTyped });
+    }
+    return acc;
+}, [] as Challenge[]);
 
-// TODO: Extract solutions to a separate component, add logic to show only there is existent individually (maybe) - Missing the Other solutions
+const [,,,, chalangeName,, stack] = path.split("/") //Tá errado
+
 // TODO: extract the hr in a Divider component (maybe)
 // TODO: Check how to format with prettier astro components
+// Pesent better the problems and solution
 ---
-<Layout title={`${exercice?.exerciseName ?? ""} - ${urlStack}`}>
+<Layout title={`${chalangeName} - ${stack}`}>
     <Card>
         <CardHeader>
             <div>
-                <CardTitle className="inline-flex">{exercice?.exerciseName ?? ""}</CardTitle>
-                <small class="text-muted-foreground"> - by {urlGithubUser}</small>
+                <CardTitle className="inline-flex">{chalangeName}</CardTitle>
             </div>
-            <CardDescription>Problem coded in {urlStack}</CardDescription>
+            <CardDescription>Problem coded in {stack}</CardDescription>
         </CardHeader>
         <CardContent>
+            <p class="text-center"> ↓ Challenge Code ↓</p>
             <hr class="w-100 h-1 mx-auto my-3 bg-gray-100 border-0 rounded dark:bg-gray-700">
             <slot />
             <hr class="w-100 h-1 mx-auto my-3 bg-gray-100 border-0 rounded dark:bg-gray-700">
+            <p class="text-center"> ↑ Challenge Code ↑</p>
         </CardContent>
-        <CardFooter className='flex-col items-start'>
-            {hasSomeSolution ? (
-                <>
-                    <CardTitle className='block'>Solutions</CardTitle> 
-                    {hasSameStackSolution && 
-                        <div class="flex gap-1">
-                            <p>Same stack:</p> 
-                            {solutionsSameStack.map(solution=> <StakLinks stackPaths={solution}/>)}
-                        </div>
-                    }
-                </>
-            ) : (
-                <CardDescription>No solutions yet - be the first!</CardDescription>
-            )}
-        </CardFooter>
     </Card>
 
-
-
-    <!-- <h2>Solutions</h2>
-    {solutionsSameStack !== undefined ? 
-    <h3>Same Stack</h3>
-    <StakLinks stackPaths={solutionsSameStack}/> : null} -->
+    <h3 class="text-2xl font-semibold leading-none tracking-tight text-center pt-10">More about this Challenge</h3>
+    <ChallengesTable challengesData={chalangesData}/>
 </Layout>
 
 
