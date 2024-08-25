@@ -10,6 +10,6 @@ export interface IChallengesData {
   githubUser: string;
   exerciseSlug: string;
   exerciseName: string;
-  writtenIn: StackPaths[];
+  problems: StackPaths[];
   solutions?: StackPaths[];
 }

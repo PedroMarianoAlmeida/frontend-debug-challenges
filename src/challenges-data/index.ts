@@ -7,7 +7,7 @@ export const completeChallengeData: IChallengesData[] = [
     githubUser: "PedroMarianoAlmeida",
     exerciseSlug: "bugged-sum",
     exerciseName: "Bugged Sum",
-    writtenIn: [
+    problems: [
       {
         stack: "JavaScript",
         paths: [

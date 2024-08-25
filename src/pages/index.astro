@@ -1,6 +1,15 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ChallengesTable from "@/components/pages/home-page/ChalengeTable"
+
+
+const chalanges = await Astro.glob('./challenges/**');
+
+const chalangesData = chalanges.map(({url}) => {
+	const urlTyped = typeof url === 'string' ? url : ""
+	const  [,,challengeName, type, stack] = urlTyped.split("/")
+	return {challengeName, type, stack, url: urlTyped}
+})
 ---
 
 <Layout title="Challenges - Frontend">
@@ -12,6 +21,6 @@ import ChallengesTable from "@/components/pages/home-page/ChalengeTable"
 		<p class="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 text-center">
 			By developer for developers
 		</p>
-		<ChallengesTable />
+		<ChallengesTable challengesData={chalangesData}/>
 	</main>
 </Layout>

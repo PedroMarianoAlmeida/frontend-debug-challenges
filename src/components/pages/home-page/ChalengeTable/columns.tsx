@@ -5,14 +5,14 @@ import StackLinks from "@/components/project-use/StackLinks";
 export const columns: ColumnDef<
   Pick<
     IChallengesData,
-    "githubUser" | "exerciseSlug" | "exerciseName" | "writtenIn"
+    "githubUser" | "exerciseSlug" | "exerciseName" | "problems"
   >
 >[] = [
   { accessorKey: "githubUser", header: "User" },
   { accessorKey: "exerciseSlug", header: "Exercise" },
   { accessorKey: "exerciseName", header: "Name" },
   {
-    accessorKey: "writtenIn",
+    accessorKey: "problems",
     header: "Problem written in",
     cell: (info) => {
       const value = info.getValue() as StackPaths[];
