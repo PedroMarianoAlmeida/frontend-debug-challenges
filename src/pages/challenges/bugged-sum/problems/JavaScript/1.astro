@@ -7,7 +7,7 @@ import ChallengeLayout from '../../../../../layouts/ChallengeLayout.astro';
     <div class="flex flex-col gap-3">
         <input class="border-2 max-w-52" type="number" placeholder="Número 1" id="num1" onchange="verificarSomaJs1()"/>
         <input class="border-2 max-w-52" type="number" placeholder="Número 2" id="num2" onchange="verificarSomaJs1()"/>
-        <div>Result is: <span id="resultado"></span></div>
+        <div>Result is: <span id="result"></span></div>
     </div>
 </ChallengeLayout> 
 
@@ -20,7 +20,7 @@ import ChallengeLayout from '../../../../../layouts/ChallengeLayout.astro';
         const num2 = document.querySelector("#num2").value;
         const soma = num1 + num2;
         
-        const resultado = document.querySelector("#resultado");
-        resultado.innerText = soma;
+        const result = document.querySelector("#result");
+        result.innerText = soma;
     }
 </script>
