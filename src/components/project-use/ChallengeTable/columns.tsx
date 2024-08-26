@@ -2,7 +2,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 export interface Challenge {
   challengeName: string;
-  type: string;
+  type: "problems" | "solutions";
   stack: string;
   url: string;
 }

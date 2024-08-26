@@ -8,35 +8,45 @@ const chalanges = await Astro.glob('./challenges/**');
 const chalangesData: Challenge[] = chalanges.map(({url}) => {
 	const urlTyped = typeof url === 'string' ? url : ""
 	const  [,,challengeName, type, stack] = urlTyped.split("/")
-	return {challengeName, type, stack, url: urlTyped}
+	const typeTyped = type === "problems" ? "problems" : "solutions"
+	return {challengeName, type: typeTyped, stack, url: urlTyped}
 })
 
-// I will try add more code here to have gruped by name/type/staks/link
-const groupByChallengeName = chalangesData.reduce((group: { [key: string]: Challenge[] }, challengeData) => {
-  const { challengeName } = challengeData;
-  group[challengeName] = group[challengeName] ?? [];
-  group[challengeName].push(challengeData);
-  return group;
-}, {});
+interface stackUrl {
+	stack: string
+	url: string
+}
+interface IChallengesGroupedByName {
+	name: string
+	problems: stackUrl[]
+	solutions: stackUrl[]
+}[]
 
-// If get too complicate, I will need to creat a few reduces or maps to acheive in a modular way
-const groupByChallengeNameTulpe = chalangesData.reduce(
-  (group: [string, Challenge[]][], challengeData) => {
-    const { challengeName } = challengeData;
-    const existingGroup = group.find(([name]) => name === challengeName);
+const challengesGroupedByName: IChallengesGroupedByName[] = chalangesData.reduce((acc: IChallengesGroupedByName[], challengeData: Challenge) => {
+  const { challengeName, type, stack , url } = challengeData;
 
-    if (existingGroup) {
-      existingGroup[1].push(challengeData);
-    } else {
-      group.push([challengeName, [challengeData]]);
-    }
+  const challengeExistent = acc.find(challangeGrouped => challangeGrouped.name === challengeName)
+  if(challengeExistent === undefined){
+	acc.push({
+		name: challengeName,
+		problems: type === "problems" ? [{
+			stack, url
+		}] : [],
+		solutions: type === "solutions" ? [{
+			stack, url
+		}] : []
+	})
+  }
+  else{
+	challengeExistent[type].push({
+			stack, url
+		})
+  }
+  return acc;
+}, []);
 
-    return group;
-  },
-  [] as [string, Challenge[]][]
-);
 
-console.log({groupByChallengeName, groupByChallengeNameTulpe})
+console.log({challengesGroupedByName})
 
 // How should I handle with problems that uses more than one page? 🤔
 ---
