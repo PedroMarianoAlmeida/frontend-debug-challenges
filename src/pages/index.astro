@@ -11,6 +11,33 @@ const chalangesData: Challenge[] = chalanges.map(({url}) => {
 	return {challengeName, type, stack, url: urlTyped}
 })
 
+// I will try add more code here to have gruped by name/type/staks/link
+const groupByChallengeName = chalangesData.reduce((group: { [key: string]: Challenge[] }, challengeData) => {
+  const { challengeName } = challengeData;
+  group[challengeName] = group[challengeName] ?? [];
+  group[challengeName].push(challengeData);
+  return group;
+}, {});
+
+// If get too complicate, I will need to creat a few reduces or maps to acheive in a modular way
+const groupByChallengeNameTulpe = chalangesData.reduce(
+  (group: [string, Challenge[]][], challengeData) => {
+    const { challengeName } = challengeData;
+    const existingGroup = group.find(([name]) => name === challengeName);
+
+    if (existingGroup) {
+      existingGroup[1].push(challengeData);
+    } else {
+      group.push([challengeName, [challengeData]]);
+    }
+
+    return group;
+  },
+  [] as [string, Challenge[]][]
+);
+
+console.log({groupByChallengeName, groupByChallengeNameTulpe})
+
 // How should I handle with problems that uses more than one page? 🤔
 ---
 
