@@ -1,7 +1,8 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import ChallengesTable from "@/components/project-use/Tables/ChallengeTable"
 import {type Challenge} from '@/components/project-use/Tables/ChallengeTable/columns'
+import {type IChallengesGroupedByName, columns} from '@/components/project-use/Tables/HomePageTable/columns'
+import { DataTable } from '@/components/project-use/Tables/data-table';
 
 const chalanges = await Astro.glob('./challenges/**');
 
@@ -11,16 +12,6 @@ const chalangesData: Challenge[] = chalanges.map(({url}) => {
 	const typeTyped = type === "problems" ? "problems" : "solutions"
 	return {challengeName, type: typeTyped, stack, url: urlTyped}
 })
-
-interface stackUrl {
-	stack: string
-	url: string
-}
-interface IChallengesGroupedByName {
-	name: string
-	problems: stackUrl[]
-	solutions: stackUrl[]
-}[]
 
 const challengesGroupedByName: IChallengesGroupedByName[] = chalangesData.reduce((acc: IChallengesGroupedByName[], challengeData: Challenge) => {
   const { challengeName, type, stack , url } = challengeData;
@@ -45,9 +36,6 @@ const challengesGroupedByName: IChallengesGroupedByName[] = chalangesData.reduce
   return acc;
 }, []);
 
-
-console.log({challengesGroupedByName})
-
 // How should I handle with problems that uses more than one page? 🤔
 ---
 
@@ -60,6 +48,8 @@ console.log({challengesGroupedByName})
 		<p class="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 text-center">
 			By developer for developers
 		</p>
-		<ChallengesTable challengesData={chalangesData}/>
+		<div class="container mx-auto py-10">
+			<DataTable columns={columns} data={challengesGroupedByName} />
+		  </div>
 	</main>
 </Layout>
