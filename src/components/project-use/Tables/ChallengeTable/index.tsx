@@ -1,7 +1,7 @@
 import { columns } from "./columns";
-import { type Challenge } from "@/components/project-use/ChallengeTable/columns";
+import { type Challenge } from "@/components/project-use/Tables/ChallengeTable/columns";
 
-import { DataTable } from "./data-table";
+import { DataTable } from "../data-table";
 
 interface ChallengesTableProps {
   challengesData: Challenge[];
