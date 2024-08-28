@@ -1,16 +1,9 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import Link from "@/components/project-use/Link";
-
-interface stackUrl {
-  stack: string;
-  url: string;
-}
-export interface IChallengesGroupedByName {
-  name: string;
-  problems: stackUrl[];
-  solutions: stackUrl[];
-}
-[];
+import {
+  type IChallengesGroupedByName,
+  type stackUrl,
+} from "@/project-use/challangeUtils.ts";
 
 export const columns: ColumnDef<IChallengesGroupedByName>[] = [
   { accessorKey: "name", header: "Challenge" },

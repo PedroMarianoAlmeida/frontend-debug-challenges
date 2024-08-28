@@ -1,11 +1,6 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import { type Challenge } from "@/project-use/challangeUtils.ts";
 
-export interface Challenge {
-  challengeName: string;
-  type: "problems" | "solutions";
-  stack: string;
-  url: string;
-}
 // TODO: Upgrade this table to show each problem in one line, with all Code
 export const columns: ColumnDef<Challenge>[] = [
   { accessorKey: "challengeName", header: "Challenge" },

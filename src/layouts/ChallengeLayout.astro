@@ -1,7 +1,7 @@
 ---
 import Layout from './Layout.astro'
 import ChallengesTable from "@/components/project-use/Tables/ChallengeTable"
-import {type Challenge} from '@/components/project-use/Tables/ChallengeTable/columns'
+import { type AstroInstance, getAllChallengeDataFromPaths } from '@/project-use/challangeUtils'
 
 import {
   Card,
@@ -14,20 +14,12 @@ import {
 const path = Astro.url.href
 
 
-const chalanges: { url: string }[] = await Astro.glob('/src/pages/challenges/**');
+const challengesBlob: AstroInstance[] = await Astro.glob('/src/pages/challenges/**');
 const challengeNameFromPath = path.split("/")[4]
 
-const chalangesData: Challenge[] = chalanges.reduce((acc, {url}) => {
-    const urlTyped = typeof url === 'string' ? url : "";
-    const [,,challengeName, type, stack] = urlTyped.split("/");
+const challengeDataFromPath = getAllChallengeDataFromPaths({challengesBlob}).filter(({challengeName}) => challengeName === challengeNameFromPath)
 
-    if (challengeName === challengeNameFromPath) {
-        acc.push({ challengeName, type, stack, url: urlTyped });
-    }
-    return acc;
-}, [] as Challenge[]);
-
-const [,,,, chalangeName,, stack] = path.split("/") //Tá errado
+const [,,,, chalangeName,, stack] = path.split("/")
 
 // TODO: extract the hr in a Divider component (maybe)
 // TODO: Check how to format with prettier astro components
@@ -52,7 +44,7 @@ const [,,,, chalangeName,, stack] = path.split("/") //Tá errado
     </Card>
 
     <h3 class="text-2xl font-semibold leading-none tracking-tight text-center pt-10">More about this Challenge</h3>
-    <ChallengesTable challengesData={chalangesData}/>
+    <ChallengesTable challengesData={challengeDataFromPath}/>
 </Layout>
 
 

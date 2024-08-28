@@ -1,40 +1,11 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import {type Challenge} from '@/components/project-use/Tables/ChallengeTable/columns'
-import {type IChallengesGroupedByName, columns} from '@/components/project-use/Tables/HomePageTable/columns'
+import {columns} from '@/components/project-use/Tables/HomePageTable/columns'
 import { DataTable } from '@/components/project-use/Tables/data-table';
+import {challengeBlobToGroupedByName, type AstroInstance} from '@/project-use/challangeUtils.ts'
 
-const chalanges = await Astro.glob('./challenges/**');
-
-const chalangesData: Challenge[] = chalanges.map(({url}) => {
-	const urlTyped = typeof url === 'string' ? url : ""
-	const  [,,challengeName, type, stack] = urlTyped.split("/")
-	const typeTyped = type === "problems" ? "problems" : "solutions"
-	return {challengeName, type: typeTyped, stack, url: urlTyped}
-})
-
-const challengesGroupedByName: IChallengesGroupedByName[] = chalangesData.reduce((acc: IChallengesGroupedByName[], challengeData: Challenge) => {
-  const { challengeName, type, stack , url } = challengeData;
-
-  const challengeExistent = acc.find(challangeGrouped => challangeGrouped.name === challengeName)
-  if(challengeExistent === undefined){
-	acc.push({
-		name: challengeName,
-		problems: type === "problems" ? [{
-			stack, url
-		}] : [],
-		solutions: type === "solutions" ? [{
-			stack, url
-		}] : []
-	})
-  }
-  else{
-	challengeExistent[type].push({
-			stack, url
-		})
-  }
-  return acc;
-}, []);
+const challengesBlob: AstroInstance[] = await Astro.glob('./challenges/**');
+const challengesGroupedByName = challengeBlobToGroupedByName({challengesBlob})
 
 // How should I handle with problems that uses more than one page? 🤔
 ---
@@ -50,6 +21,6 @@ const challengesGroupedByName: IChallengesGroupedByName[] = chalangesData.reduce
 		</p>
 		<div class="container mx-auto py-10">
 			<DataTable columns={columns} data={challengesGroupedByName} />
-		  </div>
+		</div>
 	</main>
 </Layout>
