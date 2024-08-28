@@ -3,6 +3,7 @@ export interface Challenge {
   type: "problems" | "solutions";
   stack: string;
   url: string;
+  isIgnore: boolean;
 }
 
 export interface AstroInstance {
@@ -10,16 +11,30 @@ export interface AstroInstance {
   url: string;
 }
 
+interface IGetAllChallengeDataFromPaths {
+  challengesBlob: AstroInstance[];
+  filterIgnore?: boolean;
+}
 export const getAllChallengeDataFromPaths = ({
   challengesBlob,
-}: {
-  challengesBlob: AstroInstance[];
-}): Challenge[] =>
-  challengesBlob.map(({ url }) => {
-    const [, , challengeName, type, stack] = url.split("/");
+  filterIgnore = true,
+}: IGetAllChallengeDataFromPaths): Challenge[] => {
+  const challengesWithIgnore: Challenge[] = challengesBlob.map(({ url }) => {
+    const [, , challengeName, type, stack, ignoreOrFileName] = url.split("/");
+
     const typeTyped = type === "problems" ? "problems" : "solutions";
-    return { challengeName, type: typeTyped, stack, url };
+    return {
+      challengeName,
+      type: typeTyped,
+      stack,
+      url,
+      isIgnore: ignoreOrFileName === "ignore",
+    };
   });
+  if (filterIgnore)
+    return challengesWithIgnore.filter(({ isIgnore }) => !isIgnore);
+  return challengesWithIgnore;
+};
 
 export interface stackUrl {
   stack: string;

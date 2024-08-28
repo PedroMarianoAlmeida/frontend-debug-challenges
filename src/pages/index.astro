@@ -4,10 +4,8 @@ import {columns} from '@/components/project-use/Tables/HomePageTable/columns'
 import { DataTable } from '@/components/project-use/Tables/data-table';
 import {challengeBlobToGroupedByName, type AstroInstance} from '@/project-use/challangeUtils.ts'
 
-const challengesBlob: AstroInstance[] = await Astro.glob('./challenges/**');
+const challengesBlob: AstroInstance[] = await Astro.glob('/src/pages/challenges/**');
 const challengesGroupedByName = challengeBlobToGroupedByName({challengesBlob})
-
-// How should I handle with problems that uses more than one page? 🤔
 ---
 
 <Layout title="Challenges - Frontend">
